@@ -1,17 +1,70 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}EventManager{% endblock %}</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #ffffff !important;
+            color: #0f172a;
+        }
 
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 80px;
+            background: white;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .nav-buttons { display: flex; gap: 12px; }
+
+        .btn-nav-login {
+            padding: 10px 20px;
+            color: #1e293b;
+            text-decoration: none;
+            font-weight: 500;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            transition: background 0.2s;
+        }
+        
+        .btn-nav-login:hover {
+            background: #f8fafc;
+        }
+        
+        .btn-nav-create {
+            padding: 10px 20px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        
+        .btn-nav-create:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+    </style>
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+    {% block body %}{% endblock %}
+    {% block javascripts %}{% endblock %}
+</body>
 </html>

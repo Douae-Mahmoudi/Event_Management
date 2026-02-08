@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Events - Eventify</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8fafc;
+            color: #0f172a;
+        }
+
+        .navbar {
+            background: white;
+            padding: 16px 40px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #64748b;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #2563eb;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .btn-create {
+            padding: 10px 20px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-create:hover {
+            background: #1d4ed8;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #e0e7ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: #2563eb;
+            cursor: pointer;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .page-header {
+            margin-bottom: 32px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            color: #64748b;
+            font-size: 16px;
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 24px;
+        }
+
+        .event-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+
+        .event-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .event-image {
+            width: 100%;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .event-status {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .status-upcoming {
+            background: #10b981;
+            color: white;
+        }
+
+        .status-past {
+            background: #64748b;
+            color: white;
+        }
+
+        .event-content {
+            padding: 20px;
+        }
+
+        .event-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 12px;
+        }
+
+        .event-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+
+        .event-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .event-stats {
+            display: flex;
+            gap: 20px;
+            padding: 16px;
+            background: #f8fafc;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        .stat-item {
+            flex: 1;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2563eb;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+.empty-state-icon img {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+}
+        .event-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-action {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-edit {
+            background: #eff6ff;
+            color: #2563eb;
+        }
+
+        .btn-edit:hover {
+            background: #dbeafe;
+        }
+.meta-item img {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+}
+        .btn-delete {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .btn-delete:hover {
+            background: #fecaca;
+        }
+
+        .btn-view {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-view:hover {
+            background: #1d4ed8;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: #64748b;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e2e8f0;
+            border-top-color: #2563eb;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .no-events {
+            text-align: center;
+            padding: 80px 20px;
+            background: white;
+            border-radius: 12px;
+        }
+
+        .no-events-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .no-events h3 {
+            font-size: 24px;
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+
+        .no-events p {
+            color: #64748b;
+            margin-bottom: 24px;
+        }
+
+        /* Modal pour voir les candidats */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-content.edit-modal {
+            max-width: 600px;
+        }
+
+        .modal-header {
+            padding: 24px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #94a3b8;
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+        }
+
+        .modal-close:hover {
+            background: #f1f5f9;
+        }
+
+        .modal-body {
+            padding: 24px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .modal-footer {
+            padding: 24px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 8px;
+        }
+
+        .form-label .required {
+            color: #ef4444;
+        }
+
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .btn-modal {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        .btn-modal-cancel {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+
+        .btn-modal-cancel:hover {
+            background: #e2e8f0;
+        }
+
+        .btn-modal-submit {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-modal-submit:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-modal-submit:disabled {
+            background: #cbd5e1;
+            cursor: not-allowed;
+        }
+
+        .candidates-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            padding: 16px;
+            background: #f8fafc;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-card.total { background: #eff6ff; }
+        .stat-card.pending { background: #fef3c7; }
+        .stat-card.accepted { background: #d1fae5; }
+        .stat-card.rejected { background: #fee2e2; }
+
+        .stat-card-value {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .stat-card.total .stat-card-value { color: #2563eb; }
+        .stat-card.pending .stat-card-value { color: #d97706; }
+        .stat-card.accepted .stat-card-value { color: #059669; }
+        .stat-card.rejected .stat-card-value { color: #dc2626; }
+
+        .stat-card-label {
+            font-size: 12px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .candidates-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .candidate-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .candidate-card:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .candidate-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #e0e7ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: #2563eb;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .candidate-info {
+            flex: 1;
+        }
+
+        .candidate-name {
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 4px;
+        }
+
+        .candidate-email {
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 4px;
+        }
+
+        .candidate-date {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .candidate-status {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .status-accepted {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        .status-rejected {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .candidate-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-candidate-action {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-accept {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-accept:hover {
+            background: #059669;
+        }
+
+        .btn-reject {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-reject:hover {
+            background: #dc2626;
+        }
+
+        .btn-accept:disabled,
+        .btn-reject:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #64748b;
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 12px 20px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .events-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-title {
+                font-size: 24px;
+            }
+
+            .candidates-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .candidate-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .candidate-actions {
+                width: 100%;
+            }
+
+            .btn-candidate-action {
+                flex: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-left">
+         <div class="logo">
+    <a href="/">
+        <img src="{{ asset('images/logo.png') }}" alt="EventManager Logo" style="height: 40px; width: auto;">
+    </a>
+</div>
+            <div class="nav-links">
+                <a href="/events-page">Home</a>
+                <a href="/myevents" class="active">My Events</a>
+                <a href="/myregister">My Registrations</a>
+            </div>
+        </div>
+        <div class="nav-right">
+            <div class="user-avatar" onclick="window.location.href='/profile'">U</div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">My Events</h1>
+            <p class="page-subtitle">Manage all your created events</p>
+        </div>
+
+        <div id="eventsContainer">
+            <div class="loading">
+                <div class="loading-spinner"></div>
+                <p>Loading your events...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal pour voir les candidats -->
+    <div id="candidatesModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalEventTitle">Event Candidates</h2>
+                <button class="modal-close" onclick="closeCandidatesModal()"></button>
+            </div>
+            <div class="modal-body">
+                <div id="candidatesContent">
+                    <div class="loading">
+                        <div class="loading-spinner"></div>
+                        <p>Loading candidates...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal pour éditer un événement -->
+    <div id="editEventModal" class="modal">
+        <div class="modal-content edit-modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Edit Event</h2>
+                <button class="modal-close" onclick="closeEditModal()"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editEventForm">
+                    <div class="form-group">
+                        <label class="form-label">Event Title <span class="required">*</span></label>
+                        <input type="text" class="form-input" id="editTitle" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-textarea" id="editDescription"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Category <span class="required">*</span></label>
+                        <select class="form-select" id="editCategory" required>
+                            <option value="conference">Conference</option>
+                            <option value="workshop">Workshop</option>
+                            <option value="seminar">Seminar</option>
+                            <option value="meetup">Meetup</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Location <span class="required">*</span></label>
+                        <input type="text" class="form-input" id="editLocation" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Start Date & Time <span class="required">*</span></label>
+                            <input type="datetime-local" class="form-input" id="editStartDate" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">End Date & Time <span class="required">*</span></label>
+                            <input type="datetime-local" class="form-input" id="editEndDate" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Capacity <span class="required">*</span></label>
+                        <input type="number" class="form-input" id="editCapacity" required min="1">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Image URL</label>
+                        <input type="text" class="form-input" id="editImage" placeholder="https://example.com/image.jpg">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-modal btn-modal-cancel" onclick="closeEditModal()">Cancel</button>
+                <button type="button" class="btn-modal btn-modal-submit" id="saveEditBtn" onclick="saveEditEvent()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const user = JSON.parse(localStorage.getItem('user') || 'null');
+        let currentEditEventId = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!user) {
+                alert('Please login to view your events');
+                window.location.href = '/login';
+                return;
+            }
+
+            document.querySelector('.user-avatar').textContent = user.firstName[0] || 'U';
+            loadMyEvents();
+        });
+
+        async function loadMyEvents() {
+            try {
+                const response = await fetch(`/events/user/${user.id}`);
+                const events = await response.json();
+                
+                displayEvents(events);
+            } catch (error) {
+                console.error('Error loading events:', error);
+                document.getElementById('eventsContainer').innerHTML = `
+                    <div class="no-events">
+                        <h3>Failed to load events</h3>
+                        <p>Please try again later</p>
+                    </div>
+                `;
+            }
+        }
+
+        function displayEvents(events) {
+            const container = document.getElementById('eventsContainer');
+            
+            if (events.length === 0) {
+                container.innerHTML = `
+                    <div class="no-events">
+                        <h3>No events yet</h3>
+                        <p>Create your first event to get started</p>
+                        <button class="btn-create" onclick="window.location.href='/events-page'" style="margin-top: 16px;">
+                            + Create Event
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="events-grid">
+                    ${events.map(event => createEventCard(event)).join('')}
+                </div>
+            `;
+        }
+
+        function createEventCard(event) {
+            const imageUrl = getImageUrl(event.image);
+            const imageStyle = imageUrl.startsWith('url(') 
+                ? `background-image: ${imageUrl};` 
+                : `background: ${imageUrl};`;
+
+            const statusBadge = event.isPast 
+                ? '<span class="event-status status-past">Past</span>'
+                : '<span class="event-status status-upcoming">Upcoming</span>';
+
+            return `
+                <div class="event-card">
+                    <div class="event-image" style="${imageStyle}">
+                        ${statusBadge}
+                    </div>
+                    <div class="event-content">
+                        <div class="event-header">
+                            <h3 class="event-title">${event.title}</h3>
+                        </div>
+
+                        <div class="event-meta">
+                            <div class="meta-item">
+                             <img src="{{ asset('images/calendar.png') }}" alt="Calendar">
+
+                                <span>${formatDate(event.startDate)}</span>
+                            </div>
+                            <div class="meta-item">
+                                <img src="{{ asset('images/location.png') }}" alt="location">
+
+                                <span>${event.location}</span>
+                            </div>
+                            <div class="meta-item">
+                                <img src="{{ asset('images/People.png') }}" alt="People">
+
+                                <span>${event.capacity - event.availableSlots}/${event.capacity} participants</span>
+                            </div>
+                        </div>
+
+                        <div class="event-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">${event.capacity}</div>
+                                <div class="stat-label">Capacity</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">${event.availableSlots}</div>
+                                <div class="stat-label">Available</div>
+                            </div>
+                        </div>
+
+                        <div class="event-actions">
+                            <button class="btn-action btn-view" onclick="viewCandidates(${event.id})">
+                                 Candidates
+                            </button>
+                            <button class="btn-action btn-edit" onclick="editEvent(${event.id})">
+                                Edit
+                            </button>
+                            <button class="btn-action btn-delete" onclick="deleteEvent(${event.id})">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getImageUrl(imagePath) {
+            if (!imagePath) {
+                return 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+            }
+            
+            if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+                return `url('${imagePath}')`;
+            }
+            
+            return `url('/images/${imagePath}')`;
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return 'Date TBA';
+            const date = new Date(dateString);
+            const options = { 
+                weekday: 'short',
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            return date.toLocaleDateString('en-US', options);
+        }
+
+        function viewCandidates(eventId) {
+            loadCandidates(eventId);
+        }
+
+        async function loadCandidates(eventId) {
+            document.getElementById('candidatesModal').classList.add('active');
+            
+            try {
+                const response = await fetch(`/api/registrations/event/${eventId}`);
+                const data = await response.json();
+                
+                displayCandidates(data, eventId);
+            } catch (error) {
+                console.error('Error loading candidates:', error);
+                document.getElementById('candidatesContent').innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon"></div>
+                        <p>Failed to load candidates</p>
+                    </div>
+                `;
+            }
+        }
+
+        function displayCandidates(data, eventId) {
+            const content = document.getElementById('candidatesContent');
+            
+            const stats = data.statistics;
+            const registrations = data.registrations;
+            
+            if (registrations.length === 0) {
+                content.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">
+</div>
+                        <h3>No candidates yet</h3>
+                        <p>No one has applied to this event</p>
+                    </div>
+                `;
+                return;
+            }
+
+            content.innerHTML = `
+                <div class="candidates-stats">
+                    <div class="stat-card total">
+                        <div class="stat-card-value">${stats.total}</div>
+                        <div class="stat-card-label">Total</div>
+                    </div>
+                    <div class="stat-card pending">
+                        <div class="stat-card-value">${stats.pending}</div>
+                        <div class="stat-card-label">Pending</div>
+                    </div>
+                    <div class="stat-card accepted">
+                        <div class="stat-card-value">${stats.accepted}</div>
+                        <div class="stat-card-label">Accepted</div>
+                    </div>
+                    <div class="stat-card rejected">
+                        <div class="stat-card-value">${stats.rejected}</div>
+                        <div class="stat-card-label">Rejected</div>
+                    </div>
+                </div>
+
+                <div class="candidates-list">
+                    ${registrations.map(reg => createCandidateCard(reg, eventId, data.capacity, stats.accepted)).join('')}
+                </div>
+            `;
+        }
+
+       function createCandidateCard(registration, eventId, capacity, acceptedCount) {
+    const candidate = registration.user;
+    const initials = `${candidate.firstName[0]}${candidate.lastName[0]}`;
+    const status = registration.status;
+    
+    let statusBadge = '';
+    let actions = '';
+    
+    if (status === 'pending') {
+        statusBadge = '<span class="candidate-status status-pending">Pending</span>';
+        const canAccept = acceptedCount < capacity;
+        actions = `
+            <div class="candidate-actions">
+                <button class="btn-candidate-action btn-accept" 
+                        onclick="updateCandidateStatus(${registration.id}, ${eventId}, 'accepted')"
+                        ${!canAccept ? 'disabled title="Event is full"' : ''}>
+                    Accept
+                </button>
+                <button class="btn-candidate-action btn-reject" 
+                        onclick="updateCandidateStatus(${registration.id}, ${eventId}, 'rejected')">
+                    Reject
+                </button>
+            </div>
+        `;
+    } else if (status === 'accepted') {
+        statusBadge = '<span class="candidate-status status-accepted">Accepted</span>';
+        actions = ''; 
+    } else {
+        statusBadge = '<span class="candidate-status status-rejected">Rejected</span>';
+        actions = ``;
+    }
+
+    return `
+        <div class="candidate-card">
+            <div class="candidate-avatar">${initials}</div>
+            <div class="candidate-info">
+                <div class="candidate-name">${candidate.firstName} ${candidate.lastName}</div>
+                <div class="candidate-email">${candidate.email}</div>
+                <div class="candidate-date">Applied on ${formatDate(registration.registrationDate)}</div>
+            </div>
+            ${statusBadge}
+            ${actions}
+        </div>
+    `;
+}
+        async function updateCandidateStatus(registrationId, eventId, newStatus) {
+            try {
+                const response = await fetch(`/api/registrations/${registrationId}/status`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        userId: user.id,
+                        status: newStatus
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Recharger les candidats
+                    loadCandidates(eventId);
+                } else {
+                    alert(data.error || 'Failed to update status');
+                }
+            } catch (error) {
+                console.error('Error updating status:', error);
+                alert('Failed to update status. Please try again.');
+            }
+        }
+
+        function closeCandidatesModal() {
+            document.getElementById('candidatesModal').classList.remove('active');
+        }
+
+        // Fermer le modal si on clique en dehors
+        document.addEventListener('click', function(event) {
+            const modal = document.getElementById('candidatesModal');
+            if (event.target === modal) {
+                closeCandidatesModal();
+            }
+        });
+
+        function editEvent(eventId) {
+            loadEventForEdit(eventId);
+        }
+
+        async function loadEventForEdit(eventId) {
+            currentEditEventId = eventId;
+            
+            try {
+                const response = await fetch(`/event/${eventId}`);
+                const event = await response.json();
+                
+                // Remplir le formulaire avec les données de l'événement
+                document.getElementById('editTitle').value = event.title || '';
+                document.getElementById('editDescription').value = event.description || '';
+                document.getElementById('editCategory').value = event.category || '';
+                document.getElementById('editLocation').value = event.location || '';
+                document.getElementById('editCapacity').value = event.capacity || '';
+                document.getElementById('editImage').value = event.image || '';
+                
+                // Formater les dates pour datetime-local
+                if (event.startDate) {
+                    document.getElementById('editStartDate').value = formatDateTimeLocal(event.startDate);
+                }
+                if (event.endDate) {
+                    document.getElementById('editEndDate').value = formatDateTimeLocal(event.endDate);
+                }
+                
+                // Ouvrir le modal
+                document.getElementById('editEventModal').classList.add('active');
+            } catch (error) {
+                console.error('Error loading event:', error);
+                alert('Failed to load event details');
+            }
+        }
+
+        function formatDateTimeLocal(dateString) {
+            // Convertir "2024-01-15 14:30:00" en "2024-01-15T14:30"
+            const date = new Date(dateString);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            return `${year}-${month}-${day}T${hours}:${minutes}`;
+        }
+
+        async function saveEditEvent() {
+            const saveBtn = document.getElementById('saveEditBtn');
+            saveBtn.disabled = true;
+            saveBtn.textContent = 'Saving...';
+
+            const eventData = {
+                requestUserId: user.id,
+                title: document.getElementById('editTitle').value,
+                description: document.getElementById('editDescription').value,
+                category: document.getElementById('editCategory').value,
+                location: document.getElementById('editLocation').value,
+                startDate: document.getElementById('editStartDate').value,
+                endDate: document.getElementById('editEndDate').value,
+                capacity: parseInt(document.getElementById('editCapacity').value),
+                image: document.getElementById('editImage').value || null
+            };
+
+            try {
+                const response = await fetch(`/event/update/${currentEditEventId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(eventData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('Event updated successfully!');
+                    closeEditModal();
+                    loadMyEvents(); 
+                } else {
+                    alert(data.error || 'Failed to update event');
+                }
+            } catch (error) {
+                console.error('Error updating event:', error);
+                alert('Failed to update event. Please try again.');
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.textContent = 'Save Changes';
+            }
+        }
+
+        function closeEditModal() {
+            document.getElementById('editEventModal').classList.remove('active');
+            currentEditEventId = null;
+        }
+
+        async function deleteEvent(eventId) {
+            if (!confirm('Are you sure you want to delete this event? This action cannot be undone.')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/event/delete/${eventId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        userId: user.id
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('Event deleted successfully!');
+                    loadMyEvents(); 
+                } else {
+                    alert(data.error || 'Failed to delete event');
+                }
+            } catch (error) {
+                console.error('Error deleting event:', error);
+                alert('Failed to delete event. Please try again.');
+            }
+        }
+    </script>
+</body>
+</html>
